@@ -1,11 +1,15 @@
 <?php
-// Database configuration
-$servername = "localhost";
-$username = "u676723665_lookin";
-$password = "LookinDharamshala@123!";
-// $username = "root";
-// $password = "";
-$dbname = "u676723665_lookin";
+require_once __DIR__ . '/../../vendor/autoload.php';
+
+if (file_exists(__DIR__ . '/.env')) {
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+    $dotenv->load();
+}
+
+$servername = $_ENV['DB_HOST'];
+$username = $_ENV['DB_USERNAME'];
+$password = $_ENV['DB_PASSWORD'];
+$dbname = $_ENV['DB_NAME'];
 
 // Create connection
 $conn = new mysqli($servername, $username, $password);

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,7 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Dashboard</title>
+    <title> Dashboard</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -54,7 +55,7 @@
 
                     <!-- Content Row -->
                     <div class="container mx-auto">
-                    <?php
+                    <?php 
 // Include the database connection file
 include('./includes/db.php');
 
@@ -62,15 +63,13 @@ include('./includes/db.php');
 $alertMessage = '';
 $alertType = '';
 
-
 $table = "portfolio";
 $sql = "CREATE TABLE IF NOT EXISTS $table (
     id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     project_name VARCHAR(255) NOT NULL,
     category VARCHAR(255) NOT NULL,
     image_path VARCHAR(255) NOT NULL,
-    description VARCHAR(255) NOT NULL,
-   
+    description TEXT NOT NULL,  -- Changed VARCHAR(255) to TEXT for longer descriptions
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )";
 
@@ -85,12 +84,13 @@ $sql1 = "CREATE TABLE IF NOT EXISTS $galleryTable (
     FOREIGN KEY (portfolio_id) REFERENCES portfolio(id) ON DELETE CASCADE
 )";
 $conn->query($sql1);
+
 // Check if the form is submitted
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Existing form data processing for portfolio
-    $project_name = $_POST['project_name'];
-    $category = $_POST['category'];
-    $description = $_POST['description'];
+    $project_name = $conn->real_escape_string($_POST['project_name']);
+    $category = $conn->real_escape_string($_POST['category']);
+    $description = $conn->real_escape_string($_POST['description']);  // Escape special characters
     $portfolioID = null;  // This will be the ID of the inserted portfolio
 
     // Portfolio image upload
@@ -133,7 +133,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-?>
+?> 
+
 
 
 <!-- HTML form for  portfolio input -->
